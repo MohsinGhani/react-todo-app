@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import InputForm from './components/InputForm'
-import './App.css';
 
-class App extends Component {
+class InputForm extends Component {
 
   constructor() {
     super();
@@ -10,18 +8,17 @@ class App extends Component {
       todos: [],
       title: '',
       description: '',
+      getTodo: {}
     }
 
-    // this.writeTitle = this.writeTitle.bind(this);
-    // this.writeDesc = this.writeDesc.bind(this);
+    this.writeTitle = this.writeTitle.bind(this);
+    this.writeDesc = this.writeDesc.bind(this);
     this.addTodo = this.addTodo.bind(this);
   }
 
   render() {
     return (
-      <div className="App">
-      <InputForm getTodo={this.addTodo}/>
-        {/* <div className="jumbotron jumbotron-fluid">
+        <div className="jumbotron jumbotron-fluid">
           <div className="container">
             <h1 className="display-4">TODO APPLICATI ON</h1>
             <form onSubmit={this.addTodo}>
@@ -42,31 +39,26 @@ class App extends Component {
               </div>
             </form>
           </div>
-        </div> */}
-
-        <div className="container">
-          <div>
-            {
-              this.state.todos.map((todo, i) => {
-                return <div key={i} className="alert alert-info" role="alert">
-                  <h3>{todo.title}</h3>
-                  <p>{todo.description}</p>
-                </div>
-              })
-            }
-          </div>
         </div>
-      </div>
     );
   }
 
-  addTodo(todo) {
-    console.log("parent",todo)
-    var newTodo = this.state.todos.slice()
-      newTodo.push({ title: todo.title, description: todo.description })
-      this.setState({ todos: newTodo})
+  writeTitle(event) {
+    this.setState({ title: event.target.value })
+  }
+
+  writeDesc(event) {
+    this.setState({ description: event.target.value })
+  }
+
+  addTodo(event) {
+    if (this.state.title && this.state.description) {
+      this.props.getTodo({ title: this.state.title, description: this.state.description })
+      this.setState({title:'',description:''})
+    }
+    event.preventDefault();
   }
 
 }
 
-export default App;
+export default InputForm;
